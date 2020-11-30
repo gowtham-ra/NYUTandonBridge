@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/c++  -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/gr2180_hw6_q4.dir/hw6/gr2180_hw6_q4.cpp.o  -o gr2180_hw6_q4 

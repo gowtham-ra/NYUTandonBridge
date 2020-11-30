@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/gowtham/Desktop/Gowtham/2020/CS/NYU Bridge/Projects/Class Projects/hw6/practice.cpp
+iostream
+-
+string
+-
+ctime
+-
+cstdlib
+-
+

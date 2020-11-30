@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/gowtham/Desktop/Gowtham/2020/CS/NYU Bridge/Projects/Class Projects/hello_world.cpp
+iostream
+-
+cstdlib
+-
+ctime
+-
+string
+-
+vector
+-
+

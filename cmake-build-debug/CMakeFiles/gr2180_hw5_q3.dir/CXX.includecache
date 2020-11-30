@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/gowtham/Desktop/Gowtham/2020/CS/NYU Bridge/Projects/Class Projects/hw5/gr2180_hw5_q3.cpp
+iostream
+-
+string
+-
+
