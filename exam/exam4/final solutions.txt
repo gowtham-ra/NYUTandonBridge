@@ -1,0 +1,202 @@
+Name: Gowtham Rajeshshekaran
+ 
+netId: 
+
+NYU ID: gr2180
+
+1) (3pts) Multiple Choice: b. sleep()
+2) (3pts) Multiple Choice: b. A System bus
+3) (3pts) Multiple Choice: d. Clock
+4) (3pts) Fill in the blank: swapped
+5) (3pts) Fill in the blank: TCP
+
+
+6) (10 pts) Short answer:
+Paging is a type of memory partitioning, in which each process is divided into small fixed sized pages 
+and the main memory is divided into equal sized frames. The process's pages are stored in these frames with OS allocating one frame
+for each page and these frames can be chosen from anywhere in the main memory (non-contagious). Hence each process has a 
+Page Map Table (PMT) in it's Process Control Block (PCB) which is a vector with index as the page number and the values as their corresponding frames. MMU of the CPU uses the PMT to fetch the frames for memory access.
+A PMT contains the frame number and also other bits like present bit (to check if the page is in main memory), modify bits (to check if the values in the main memory and in the secondary memory are the same), reference bit and cache.
+
+
+
+7) (10 pts) Short answer:
+* We can implement a hybrid version which has both ULT and KLT.
+* This is called Light Weight Process.
+* Here, A kernel level thread is implemented as a light weight container inside which any number of user level threads (user preferred quantity) can be added.
+* In order to prioritise certain operations over others, we can create a single light weight container of KLT for each of these high priority operations and inside that we can create a single ULT which perform this operation. 
+* One more light weight container of KLT is created and all other non priority operations can be placed here each in a single ULT.
+
+
+
+8) (10 pts) Short answer:
+In HTTP non-persistent connections, only one request and response can be made from a single connection. 
+Also HTTP are stateless, which means that the server would not remember any details from the previous sessions with the client. HTTP cookies are required for the web server to remember the details from previous sessions. In this case, when client makes the first HTTP request with login credentials to the web server, the server generates a random ID for the user and saves the credentials against this ID in its backend database and sends this ID back to client which it saves along with web server's host address in a file. Since its a non-persistent connection, the connection is closed now. From here on, for future requests (with a new connection every time) from the client, the client will also include this user ID in the request, so that the server uses this ID to fetch the client's login credentials, therefore keeping it in "logged in" state in the website for each connections, without having the client to send username and password credentials with each request. Hence cookies are essential in non persistent connections.
+
+
+9) (10 pts) Short answer:
+If 64Kbytes is the window size of TCP,
+Lets assume each packet is 1500 bits, then only ~ 43 packets can be transmitted through each window
+RTT is the round trip value for packets to reach a destination and come back to source.
+Propogation delay = d / s = 3000000 / 3.8*10^8 = 7.8 ms
+If the network has transmission rate of 10 Mbps
+Transmission time = 6.4 ms
+Then, the TCP connection can send next window of packets only after receiving ACK from destination.
+1 Transmission with feedback ACK takes 1 RTT.
+So a single RTT will take roughly take (7.8 + 6.4) * 2 ~ 30 ms
+So in 1 RRT only 64Kb of data will be sent in 30ms.
+So therefore only 2 MB of data is transmitted per second.
+So every window of transmission will send only 2 MB of data per second even if the transmission rate is 10 MB which results in a slow network connection from New York to El Paso, Texas
+
+
+10) (15 pts) Long answer:
+Assigned IP for subnet = 10.1.1.0/24
+Total IP addresses available = 256 from 10.1.1.0 to 10.1.1.255
+Divide into three networks, 
+
+First, NY and LA requires  50 devices + 2 (1 network address, 1 broadcast address)
+
+So NY can use addresses in the range 
+NY subnet mask = 10.1.1.0/26
+No of addresses available = 64
+Network Number = 10.1.1.0
+Broadcast ID = 10.1.1.63
+
+Los Angeles 
+LA subnet mask = 10.1.1.0/26
+Network Number = 10.1.1.64
+Broadcast ID = 10.1.1.127
+No of addresses available = 64
+
+WAN,
+WAN subnet mask = 10.1.1.0/26
+Network Number = 10.1.1.128
+Broadcast ID = 10.1.1.255
+No of available addresses = 126
+
+
+11) (10 pts) Short answer:
+The next hop IP address used is 10.10.1.6
+
+The network number of the next hop is found by doing an AND bitwise calculation between the binary values of destination IP and the subnet mask for the entries in the routing table. If the resulting binary value matches with the binary value of the network number it will be the next hop address.
+
+Here in this case, it matches with all the given entries. Hence a network number with large subnet mask is chosen.
+Therefore in this case, it is the network 192.168.0.0/24 and it's next hop address is 10.10.1.6
+
+The given Destination IP address = 192.168.0.32
+The binary value of given IP address = 11000000.10101000.00000000.00100000
+
+
+12) (20 pts) Write the code:
+#include <iostream>
+#include <string.h>
+using namespace std;
+
+
+
+template<class T>
+class ExpressionTree;
+template<class T>
+class ExpressionTreeNode;
+class Operand;
+class Operator;
+
+template<class T>
+class ExpressionTree {
+public:
+    ExpressionTree(){}
+    double getValue(ExpressionTreeNode<T>* node);
+
+private:
+    ExpressionTreeNode<T>* root;
+};
+
+template<class T>
+double ExpressionTree<T>::getValue(ExpressionTreeNode<T>* node) {
+    if (node != nullptr) {
+        return node->getValue();
+    }
+}
+
+template<class T>
+class ExpressionTreeNode {
+public:
+    ExpressionTreeNode();
+    ExpressionTreeNode(T theData, ExpressionTreeNode<T>* leftPtr = nullptr,
+                       ExpressionTreeNode<T>* rightPtr = nullptr) : data(theData), left(leftPtr), right(rightPtr) {}
+    virtual T getValue() = 0;
+
+protected:
+    T data;
+public:
+    T getData() const {
+        return data;
+    }
+
+protected:
+    ExpressionTreeNode<T>* left;
+    ExpressionTreeNode<T>* right;
+public:
+    ExpressionTreeNode<T> *getLeft() const {
+        return left;
+    }
+
+    ExpressionTreeNode<T> *getRight() const {
+        return right;
+    }
+};
+
+
+class Operand : public ExpressionTreeNode<double>{
+public:
+    Operand() : ExpressionTreeNode(){};
+    Operand(double value) : ExpressionTreeNode(value){};
+    virtual double getValue() const;
+};
+
+double Operand::getValue() const {
+    return this->data;
+}
+
+
+class Operator : public ExpressionTreeNode<char> {
+public:
+    Operator() : ExpressionTreeNode(){};
+    Operator(char value) : ExpressionTreeNode(value){};
+    virtual double getValue(ExpressionTreeNode* nodePtr);
+    //virtual string getType() { return "OPR";}
+};
+
+double Operator::getValue(ExpressionTreeNode* nodePtr)  {
+
+    if (nodePtr!= nullptr) {
+        double value1;
+        double value2;
+
+        value1 = getValue(nodePtr->getLeft());
+        value2 = getValue(nodePtr->getRight());
+
+        if (nodePtr->getData() == '+' || nodePtr->getData() == '*') {
+            double result = 0;
+
+            switch (this->data) {
+                case '+':
+                    result = value1 + value2;
+                    break;
+                case '*':
+                    result = value1 * value2;
+                    break;
+            }
+            return result;
+        }
+        else {
+            return nodePtr->getValue();
+        }
+    }
+}
+
+int main() {
+    return 0;
+}
+
+

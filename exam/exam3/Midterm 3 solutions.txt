@@ -1,0 +1,256 @@
+
+Name: Gowtham Rajeshshekaran
+ 
+netId: gr2180
+
+
+
+
+
+Solutions to midterm exam
+
+
+Question 1 (3pts; Multiple choice answer): b. void deleteRoot(BSTNode*& root)
+Question 2 (3pts; Multiple choice answer): c. virtual void Car::consume()=0;
+Question 3 (3pts; Multiple choice answer): b. Overload operator= in the Derived class
+Question 4 (3pts; Math Expression): 23+465-*+ (23+4+65-*???)
+Question 5 (3pts; Value): -1.5
+Question 6 (15 pts; long answer):
+1. A findHeight function to find height of the given node and returning the height is implemented
+findHeight Function:
+    * if the given node is null, return height as -1
+
+    * else, call recursively call max(height of left child node and right child node) and add one to it (current node)
+      and return it
+
+2. To check for balance of tree starting with the given root node, do PreOrder Traversal (to break the recursion if unbalanced)
+   * In PreOrder Traversal, the balance of current node is checked first and
+     then traverse to left child and right child recursively.
+
+   * During PreOrder Traversal, for the current node,
+        * Find the difference of the height of the left subtree and the height of the right subtree (get the heights
+          using findHeight function).
+        * If the difference is more than one, return false (tree is unbalanced)
+        * Else return true.
+
+  * If false is returned, donot recursve more and return false (unbalanced)
+  * Else do the left and right recursion in the preorder traversal.
+
+3. In this way all nodes starting from root, left, right are checked for balance
+
+4. Worst case running time will be O(n) (preorder traversal of all nodes) when all the nodes are balanced.
+   If the tree is unbalanced, it ends the traversal.
+
+Question 7 (15 pts; code):
+template <typename T>
+LListNode<T>* concatLists(const LListNode<T>*& list1, const LListNode<T>*& list2) {
+    LListNode<T>* resList = nullptr;
+    LListNode<T>* itr = nullptr;
+    resList = recCopy(list1);
+    itr = resList;
+    if (itr == nullptr)
+        resList = recCopy(list2);
+    else {
+        while (itr->next != nullptr)
+            itr = itr->next;
+
+        itr->next = recCopy(list2);
+    }
+
+    return resList;
+}
+
+template <typename T>
+LListNode<T>* recCopy(const LListNode<T>*& head) {
+    if (head == nullptr)
+        return nullptr;
+    return new LListNode<T>(head->data, recCopy(head->next))
+}
+
+
+
+Question 8 (20 pts; code):
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <list>
+#include <map>
+
+using namespace std;
+
+
+void merge(vector<int>& theVector,int leftLow,int leftHigh,int rightHigh) {
+    int rightLow = leftHigh + 1;
+    int size = theVector.size();
+    int* arr = new int[size];
+    int left = leftLow;
+    int right = rightLow;
+    int idx = 0;
+
+    while (left <= leftHigh && right <= rightHigh) {
+        if (theVector[left] < theVector[right]) {
+            arr[idx++] = theVector[left];
+            left++;
+        }
+        else {
+            arr[idx++] = theVector[right];
+            right++;
+        }
+    }
+
+    while (left <= leftHigh) {
+        arr[idx++] = theVector[left];
+        left++;
+    }
+    while (right <= rightHigh) {
+        arr[idx++] = theVector[right];
+        right++;
+    }
+
+    for (int i = 0, newIdx = leftLow; i <= idx; i++, newIdx++) {
+        theVector[newIdx] = arr[i];
+    }
+
+}
+
+void mergeSort(vector<int>& vector, int start, int end) {
+    if (start >= end) {
+        return;
+    }
+    else {
+        int midIdx = ((end - start) + 1) / 2;
+        mergeSort(vector, start, midIdx - 1);
+        mergeSort(vector, midIdx, end);
+        merge(vector, start, midIdx, end);
+        return;
+    }
+
+}
+
+
+void openFile(ifstream& ins) {
+    string fileName;
+    cout << "Please enter the file name: ";
+    cin >> fileName;
+
+    ins.open(fileName);
+
+    while (!ins) {
+        cout <<"Unable to open the file, please enter file name again: ";
+        cin >> fileName;
+        ins.clear();
+        ins.open(fileName);
+    }
+}
+
+int binSearch(const vector<int>& v,  int val, int start, int end) {
+    int mid = ((end - start) + 1) / 2;
+
+    if (start >= end) {
+        return -1;
+    }
+    else if (mid == val)
+        return mid;
+    else if (val < mid)
+        return binSearch(v, val, start, mid - 1);
+    else
+        return binSearch(v, val, mid + 1, end);
+}
+
+
+int main() {
+    ifstream fin;
+    ofstream fout;
+
+    openFile(fin);
+
+    int idNum;
+    vector<int> idVec;
+    vector<int> uniqVec;
+
+    while (fin >> idNum) {
+        idVec.push_back(idNum);
+        fin.ignore(9999, '\n');
+    }
+
+    mergeSort(idVec, 0, idVec.size() - 1);
+
+    for (auto el : idVec) {
+        if (uniqVec.empty())
+            uniqVec.push_back(el);
+
+        if (binSearch(uniqVec, el, 0, uniqVec.size() - 1) == -1)
+            uniqVec.push_back(el);
+    }
+
+    fin.close();
+
+    fout.open("output.txt");
+
+    for (auto num : uniqVec) {
+        fout << num << endl;
+    }
+    fout.close();
+    return 0;
+}
+
+Question 9 (20 pts; code):
+template <typename T>
+list<T> lessEqVals(BSTNode<T>* root, T value) {
+    list<T> list;
+
+    BSTNode<T>* valNode = findValNode(root, value);
+
+    addValues(valNode, list);
+    return list;
+}
+
+template <typename T>
+BSTNode<T>* findValNode(BSTNode<T>* node, T value) {
+    if (node == nullptr) {
+        cout << "Value not found\n";
+        exit(1);
+    }
+
+    if (node->data == value) {
+        return node;
+    }
+    else if (node->data > value) {
+        return findValNode(node->left, value);
+    }
+    else
+        return findValNode(node->right);
+}
+
+template <typename T>
+void addValues(BSTNode<T>* node, list<T>& list) {
+    if (node != nullptr) {
+        addValues(node->left, list);
+        list.push_back(node->data);
+        addValues(node->right, list);
+    }
+}
+
+
+Question 10(15 pts; code):
+class Exam {
+public:
+    Exam();
+    virtual int getResults() = 0;
+    virtual void display();
+};
+
+class WrittenExam : public Exam {
+public:
+    WrittenExam();
+    virtual int getResults() {return 1;}
+    virtual void display();
+};
+
+class PracticalExam : public Exam {
+public:
+    PracticalExam();
+    virtual int getResults() { return -1;}
+    virtual void display();
+};
