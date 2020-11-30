@@ -1,4 +1,4 @@
-#  NYU Tandon Bridge to CS Program (17-Weeks Summer 2020)
+#  NYU Tandon Bridge to CS (17-Weeks Summer 2020)
 
 ![NYU Tandon School of Engineering Logo](nyu_logo.jpg)
 
