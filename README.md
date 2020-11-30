@@ -2,7 +2,7 @@
 
 ![NYU Tandon School of Engineering Logo](nyu_logo.jpg)
 
-Want to know more about my background and/or collaborate? Let's connect through LinkedIn!
+Want to know more about my background and/or collaborate? Let's connect!
 [Gowtham's LinkedIn](https://www.linkedin.com/in/gowtham-rajeshshekaran-54b49565)
 
 Program official website - [NYU Tandon Bridge](https://engineering.nyu.edu/academics/programs/nyu-tandon-bridge)
